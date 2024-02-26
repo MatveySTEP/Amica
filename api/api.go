@@ -31,7 +31,10 @@ func (a *Api) UseRoutes() {
 			"status": "OK",
 		})
 	})
-	apiV1.GET("/api/register", handles.Register)
+	apiV1.POST("/api/register", handles.Register)
+	apiV1.GET("/api/user", handles.User)
+	apiV1.POST("/api/login", handles.Login)
+	apiV1.POST("/api/logout", handles.Logout)
 }
 func (a *Api) Run() {
 	if err := a.r.Run(a.config.Addr); err != nil {
