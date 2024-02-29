@@ -19,11 +19,24 @@ func Register(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+	var userExist int
+	err := db.DB.Raw("SELECT COUNT(id) from users where name=?", data["name"]).Scan(&userExist).Error
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+	if userExist > 0 {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": "User already exist",
+		})
+		return
+	}
 
 	password, _ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
 	user := models.User{
 		Name:     data["name"],
 		Password: password,
+		Role:     models.RoleClient,
 	}
 	db.DB.Create(&user)
 	c.JSON(200, user)
@@ -37,7 +50,7 @@ func Login(c *gin.Context) {
 	}
 
 	var user models.User
-	db.DB.Where("email = ?", data["email"]).First(&user)
+	db.DB.Where("name = ?", data["name"]).First(&user)
 	if user.Id == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"message": "user not found"})
 		return

@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/viper"
 	"os"
 	"project/api"
+	"project/db"
 	"runtime"
 )
 
@@ -15,14 +16,14 @@ var configDefaults = map[string]interface{}{
 	"gomaxprocs": 0,
 	"api_addr":   "127.0.0.1:8100",
 	"redis_addr": "127.0.0.1:6379",
-	"db_addr":    "postgres://127.0.0.1:5432/sozvuchno",
+	"db_addr":    "postgres://127.0.0.1:5432/test",
 }
 
 func init() {
 	rootCmd.Flags().String("jwt_secret", "", "jwt secret")
 	rootCmd.Flags().String("api_addr", "127.0.0.1:81000", "api address")
 	rootCmd.Flags().String("redis_addr", "127.0.0.1:6379", "redis address")
-	rootCmd.Flags().String("db_addr", "postgres://127.0.0.1:5432/sozvuchno", "database url")
+	rootCmd.Flags().String("db_addr", "postgres://127.0.0.1:5432/test", "database url")
 
 	viper.BindPFlag("jwt_secret", rootCmd.Flags().Lookup("jwt_secret"))
 	viper.BindPFlag("api_addr", rootCmd.Flags().Lookup("api_addr"))
@@ -56,7 +57,7 @@ var rootCmd = &cobra.Command{
 				runtime.GOMAXPROCS(runtime.NumCPU())
 			}
 		}
-
+		db.Connect()
 		v := viper.GetViper()
 		a := api.NewApi(api.Config{Addr: v.GetString("api_addr")})
 		a.Run()

@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"project/models"
@@ -9,12 +10,16 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-	dsn := "host=localhost user=gorm password=gorm dbname=gorm port=5432 sslmode=disable TimeZone=Asia/Shanghai"
-	connection, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	v := viper.GetViper()
+	dbAddr := v.GetString("db_addr")
+	connection, err := gorm.Open(postgres.Open(dbAddr), &gorm.Config{})
 	if err != nil {
 		panic("could not connect to the database")
 	}
 
 	DB = connection
-	connection.AutoMigrate(&models.User{})
+	err = connection.AutoMigrate(&models.User{})
+	if err != nil {
+		panic("pppp")
+	}
 }
