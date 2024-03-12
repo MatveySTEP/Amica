@@ -21,7 +21,7 @@ var configDefaults = map[string]interface{}{
 
 func init() {
 	rootCmd.Flags().String("jwt_secret", "", "jwt secret")
-	rootCmd.Flags().String("api_addr", "127.0.0.1:81000", "api address")
+	rootCmd.Flags().String("api_addr", "127.0.0.1:8100", "api address")
 	rootCmd.Flags().String("redis_addr", "127.0.0.1:6379", "redis address")
 	rootCmd.Flags().String("db_addr", "postgres://127.0.0.1:5432/test", "database url")
 

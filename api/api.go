@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"project/handles"
@@ -26,6 +27,9 @@ func NewApi(c Config) *Api {
 
 func (a *Api) UseRoutes() {
 	apiV1 := a.r.Group("/v1")
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"*"}
+	apiV1.Use(cors.New(config))
 	apiV1.GET("/test", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status": "OK",

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/project.iml" filepath="$PROJECT_DIR$/.idea/project.iml" />
+      <module fileurl="file://$USER_HOME$/vue-auth/.idea/vue-auth.iml" filepath="$USER_HOME$/vue-auth/.idea/vue-auth.iml" />
     </modules>
   </component>
 </project>
