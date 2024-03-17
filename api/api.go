@@ -1,7 +1,6 @@
 package api
 
 import (
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"project/handles"
@@ -27,9 +26,23 @@ func NewApi(c Config) *Api {
 
 func (a *Api) UseRoutes() {
 	apiV1 := a.r.Group("/v1")
-	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"*"}
-	apiV1.Use(cors.New(config))
+	middleware := func(c *gin.Context) {
+		origin := c.GetHeader("Origin")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(200)
+			return
+		}
+
+		c.Next()
+	}
+	a.r.Use(middleware)
+	apiV1.Use(middleware)
 	apiV1.GET("/test", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status": "OK",

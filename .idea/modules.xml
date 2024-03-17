@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../amica-ui/.idea/amica-ui.iml" filepath="$PROJECT_DIR$/../amica-ui/.idea/amica-ui.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/project.iml" filepath="$PROJECT_DIR$/.idea/project.iml" />
       <module fileurl="file://$USER_HOME$/vue-auth/.idea/vue-auth.iml" filepath="$USER_HOME$/vue-auth/.idea/vue-auth.iml" />
     </modules>
