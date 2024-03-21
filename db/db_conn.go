@@ -1,10 +1,10 @@
 package db
 
 import (
+	models2 "amica/db/models"
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	models2 "project/db/models"
 )
 
 var DB *gorm.DB

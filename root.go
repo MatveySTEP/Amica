@@ -1,14 +1,14 @@
 package main
 
 import (
+	"amica/api"
+	"amica/db"
 	"fmt"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
-	"project/api"
-	"project/db"
 	"runtime"
 )
 

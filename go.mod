@@ -1,4 +1,4 @@
-module project
+module amica
 
 go 1.21
 

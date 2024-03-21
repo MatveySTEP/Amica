@@ -1,13 +1,13 @@
 package handlers
 
 import (
+	"amica/db"
+	"amica/db/models"
+	"amica/util"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
-	"project/db"
-	"project/db/models"
-	"project/util"
 	"strconv"
 	"time"
 )
@@ -57,7 +57,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(data["password"])); err != nil {
+	if err := bcrypt.CompareHashAndPassword(user.Password, []byte(data["password"])); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "incorrect password"})
 		return
 	}
@@ -74,6 +74,7 @@ func Login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"status": "success", "token": token})
 }
+
 func User(c *gin.Context) {
 	user, err := util.ExtractUserFromRequest(c)
 	if err != nil {

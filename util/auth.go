@@ -1,10 +1,10 @@
 package util
 
 import (
+	"amica/db"
+	"amica/db/models"
 	"errors"
 	"github.com/gin-gonic/gin"
-	"project/db"
-	"project/db/models"
 	"strings"
 )
 

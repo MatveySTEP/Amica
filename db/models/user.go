@@ -1,8 +1,8 @@
 package models
 
 const (
-	RoleClient = "client"
-	RoleAdmin  = "admin"
+	RoleClient  = "client"
+	RoleTeacher = "teacher"
 )
 
 type User struct {
@@ -10,6 +10,6 @@ type User struct {
 	Name             string    `json:"name"`
 	Password         []byte    `json:"-"`
 	Role             string    `json:"role"`
-	Courses          []*Course `gorm:"foreignKey:teacher_id;"`
+	Courses          []*Course `json:"courses" gorm:"foreignKey:teacher_id;"`
 	PurchasedCourses []*Course `json:"purchased_courses" gorm:"many2many:purchased_courses;"`
 }

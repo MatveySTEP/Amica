@@ -1,10 +1,10 @@
 package api
 
 import (
+	"amica/api/handlers"
+	"amica/api/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
-	"project/api/handlers"
-	"project/api/middleware"
 )
 
 type Api struct {
@@ -55,6 +55,12 @@ func (a *Api) UseRoutes() {
 	apiV1.POST("/api/logout", handlers.Logout)
 
 	apiV1.GET("/api/user", middleware.AuthMiddleware, handlers.User)
+
+	// Запросы для учителя
+	apiV1.GET("/api/courses", middleware.AuthMiddleware, handlers.ListCourses)
+	apiV1.POST("/api/courses/create", middleware.AuthMiddleware, handlers.CreateCourse)
+	apiV1.GET("/api/courses/:course", middleware.AuthMiddleware, handlers.GetCourse)
+	apiV1.DELETE("/api/courses/:course", middleware.AuthMiddleware, handlers.DeleteCourse)
 }
 func (a *Api) Run() {
 	if err := a.r.Run(a.config.Addr); err != nil {

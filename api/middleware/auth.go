@@ -1,9 +1,9 @@
 package middleware
 
 import (
+	"amica/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"project/util"
 )
 
 func AuthMiddleware(c *gin.Context) {
