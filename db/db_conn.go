@@ -18,7 +18,7 @@ func Connect() {
 	}
 
 	DB = connection
-	err = connection.AutoMigrate(&models.User{})
+	err = connection.AutoMigrate(&models.User{}, &models.Course{}, &models.Feedback{})
 	if err != nil {
 		panic("pppp")
 	}

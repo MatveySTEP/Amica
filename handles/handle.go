@@ -71,16 +71,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	cookie := &http.Cookie{
-		Name:     "jwt",
-		Value:    token,
-		Expires:  time.Now().Add(time.Hour * 24),
-		HttpOnly: true,
-	}
-
-	http.SetCookie(c.Writer, cookie)
-
-	c.JSON(http.StatusOK, gin.H{"message": "success"})
+	c.JSON(http.StatusOK, gin.H{"status": "success", "token": token})
 }
 func User(c *gin.Context) {
 	cookie, err := c.Request.Cookie("jwt")
