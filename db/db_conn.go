@@ -4,7 +4,7 @@ import (
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"project/models"
+	models2 "project/db/models"
 )
 
 var DB *gorm.DB
@@ -18,7 +18,7 @@ func Connect() {
 	}
 
 	DB = connection
-	err = connection.AutoMigrate(&models.User{}, &models.Course{}, &models.Feedback{})
+	err = connection.AutoMigrate(&models2.User{}, &models2.Course{}, &models2.Feedback{})
 	if err != nil {
 		panic("pppp")
 	}

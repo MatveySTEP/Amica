@@ -1,4 +1,4 @@
-package handles
+package handlers
 
 import (
 	"github.com/dgrijalva/jwt-go"
@@ -6,7 +6,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"project/db"
-	"project/models"
+	"project/db/models"
+	"project/util"
 	"strconv"
 	"time"
 )
@@ -74,23 +75,11 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "success", "token": token})
 }
 func User(c *gin.Context) {
-	cookie, err := c.Request.Cookie("jwt")
+	user, err := util.ExtractUserFromRequest(c)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "unauthenticated"})
+		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
-
-	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(SecretKey), nil
-	})
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "unauthenticated"})
-		return
-	}
-
-	claims := token.Claims.(*jwt.StandardClaims)
-	var user models.User
-	db.DB.Where("id = ?", claims.Issuer).First(&user)
 	c.JSON(http.StatusOK, user)
 }
 

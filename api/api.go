@@ -3,7 +3,8 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
-	"project/handles"
+	"project/api/handlers"
+	"project/api/middleware"
 )
 
 type Api struct {
@@ -26,7 +27,7 @@ func NewApi(c Config) *Api {
 
 func (a *Api) UseRoutes() {
 	apiV1 := a.r.Group("/v1")
-	middleware := func(c *gin.Context) {
+	cors := func(c *gin.Context) {
 		origin := c.GetHeader("Origin")
 		c.Header("Access-Control-Allow-Origin", origin)
 		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -41,17 +42,19 @@ func (a *Api) UseRoutes() {
 
 		c.Next()
 	}
-	a.r.Use(middleware)
-	apiV1.Use(middleware)
+	a.r.Use(cors)
+	apiV1.Use(cors)
+
 	apiV1.GET("/test", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status": "OK",
 		})
 	})
-	apiV1.POST("/api/register", handles.Register)
-	apiV1.GET("/api/user", handles.User)
-	apiV1.POST("/api/login", handles.Login)
-	apiV1.POST("/api/logout", handles.Logout)
+	apiV1.POST("/api/register", handlers.Register)
+	apiV1.POST("/api/login", handlers.Login)
+	apiV1.POST("/api/logout", handlers.Logout)
+
+	apiV1.GET("/api/user", middleware.AuthMiddleware, handlers.User)
 }
 func (a *Api) Run() {
 	if err := a.r.Run(a.config.Addr); err != nil {
