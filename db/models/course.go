@@ -24,7 +24,7 @@ type Course struct {
 	Teacher        *User
 	Name           string
 	Desc           string
-	Price          float32
+	Price          float32 `gorm:"type: numeric(8,2)"`
 	Duration       string
 	UsersPurchased []*User `json:"users_purchased" gorm:"many2many:purchased_courses;"`
 }

@@ -121,3 +121,28 @@ func DeleteCourse(c *gin.Context) {
 
 	db.DB.Delete(course)
 }
+
+// запросы для ученика
+
+func BuyCourse(c *gin.Context) {
+	user, err := util.ExtractUserFromRequest(c)
+	if err != nil {
+		c.AbortWithStatus(http.StatusUnauthorized)
+	}
+	courseID := c.Param("course")
+	if courseID == "" {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	var course *models.Course
+	err = db.DB.Where("id = ?", courseID).First(&course).Error
+	if err != nil || course == nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+	err = db.DB.Model(user).Association("PurchasedCourses").Append(course)
+	if err != nil {
+		c.AbortWithStatus(http.StatusUnauthorized)
+	}
+}

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="amica@127.0.0.1" uuid="5775482e-19a8-4118-bd34-8b39022d0817">
+    <data-source source="LOCAL" name="amica@localhost" uuid="d4d3f000-2685-4aae-8cb4-4a26e8a89641">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://127.0.0.1:6432/amica</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:6432/amica</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

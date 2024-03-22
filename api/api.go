@@ -61,6 +61,7 @@ func (a *Api) UseRoutes() {
 	apiV1.POST("/api/courses/create", middleware.AuthMiddleware, handlers.CreateCourse)
 	apiV1.GET("/api/courses/:course", middleware.AuthMiddleware, handlers.GetCourse)
 	apiV1.DELETE("/api/courses/:course", middleware.AuthMiddleware, handlers.DeleteCourse)
+	apiV1.POST("/api/courses/buy/:course", middleware.AuthMiddleware, handlers.BuyCourse)
 }
 func (a *Api) Run() {
 	if err := a.r.Run(a.config.Addr); err != nil {
