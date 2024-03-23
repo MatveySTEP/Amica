@@ -62,6 +62,11 @@ func (a *Api) UseRoutes() {
 	apiV1.GET("/api/courses/:course", middleware.AuthMiddleware, handlers.GetCourse)
 	apiV1.DELETE("/api/courses/:course", middleware.AuthMiddleware, handlers.DeleteCourse)
 	apiV1.POST("/api/courses/buy/:course", middleware.AuthMiddleware, handlers.BuyCourse)
+
+	// Запросы для отзывов
+	apiV1.POST("/api/feedback/create/:course", middleware.AuthMiddleware, handlers.CreateFeedback)
+	apiV1.GET("/api/feedback/:course", middleware.AuthMiddleware, handlers.ListFeedback)
+	apiV1.DELETE("/api/feedback/delete/:feedback", middleware.AuthMiddleware, handlers.DeleteFeedback)
 }
 func (a *Api) Run() {
 	if err := a.r.Run(a.config.Addr); err != nil {

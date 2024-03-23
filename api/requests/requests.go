@@ -6,3 +6,8 @@ type CreateCourseRequest struct {
 	Price    float32 `json:"price"`
 	Duration string  `json:"duration"`
 }
+
+type CreateFeedbackRequest struct {
+	Rating  int    `json:"rating"`
+	Message string `json:"message"`
+}
