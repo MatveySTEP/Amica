@@ -6,6 +6,7 @@ import (
 	"amica/db/models"
 	"amica/util"
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 	"gorm.io/gorm"
 	"net/http"
 	"strconv"
@@ -33,8 +34,19 @@ func CreateFeedback(c *gin.Context) {
 	courseId, err := strconv.Atoi(courseID)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
+		return
 	}
-	//нужно еще написать проверку, что отзыв один
+	var fbCount int
+	err = db.DB.Raw("select count(id) from feedbacks where student_id = ? and course_id = ?", user.Id, courseId).Scan(&fbCount).Error
+	if err != nil {
+		log.Error().Err(err).Msg("не удалось прочитать количество отзывов")
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+	if fbCount > 0 {
+		c.AbortWithStatus(http.StatusConflict)
+		return
+	}
 	feedback := &models.Feedback{
 		Model:     gorm.Model{},
 		StudentID: int(user.Id),
@@ -63,6 +75,7 @@ func ListFeedback(c *gin.Context) {
 	courseId, err := strconv.Atoi(courseID)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
+		return
 	}
 	var feedbackList []models.Feedback
 	db.DB.Where("course_id=?", courseId).Find(&feedbackList)
@@ -78,21 +91,23 @@ func DeleteFeedback(c *gin.Context) {
 	feedbackId, err := strconv.Atoi(feedbackID)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
+		return
 	}
 	user, err := util.ExtractUserFromRequest(c)
 	if err != nil {
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
-	if user.Role != models.RoleTeacher {
-		c.AbortWithStatus(http.StatusForbidden)
-		return
-	}
+
 	var feedback *models.Feedback
 	//тут отъебнуло
 	err = db.DB.Where("id = ?", feedbackId).First(&feedback).Error
 	if err != nil || feedback == nil {
 		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+	if feedback.StudentID != int(user.Id) {
+		c.AbortWithStatus(http.StatusForbidden)
 		return
 	}
 	db.DB.Delete(feedback)
