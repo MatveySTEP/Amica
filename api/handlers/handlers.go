@@ -72,7 +72,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "success", "token": token})
+	c.JSON(http.StatusOK, gin.H{"status": "success", "token": token, "user": user})
 }
 
 func User(c *gin.Context) {
