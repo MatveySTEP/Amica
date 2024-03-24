@@ -38,6 +38,18 @@ func ListCourses(c *gin.Context) {
 	c.JSON(200, courses)
 }
 
+func ListAllCourse(c *gin.Context) {
+
+	var courses []*models.Course
+
+	err := db.DB.Find(&courses).Error
+	if err != nil {
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+	c.JSON(200, courses)
+}
+
 func GetCourse(c *gin.Context) {
 	courseID := c.Param("course")
 	if courseID == "" {

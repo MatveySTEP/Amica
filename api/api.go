@@ -55,6 +55,8 @@ func (a *Api) UseRoutes() {
 	apiV1.POST("/api/logout", handlers.Logout)
 
 	apiV1.GET("/api/user", middleware.AuthMiddleware, handlers.User)
+	//Получение всех курсов
+	apiV1.GET("/api/courses/all", middleware.AuthMiddleware, handlers.ListAllCourse)
 
 	// Запросы для учителя
 	apiV1.GET("/api/courses", middleware.AuthMiddleware, handlers.ListCourses)
