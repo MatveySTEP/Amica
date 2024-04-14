@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"amica/api"
 	"amica/db"
 	"amica/db/models"
 	"amica/util"
@@ -41,6 +42,10 @@ func Register(c *gin.Context) {
 	}
 	db.DB.Create(&user)
 	c.JSON(200, user)
+
+	sub := "Добро пожаловать"
+	body := "лох чмо"
+	api.SendEmail("stepanovmatvey24@mail.ru", sub, body)
 }
 
 func Login(c *gin.Context) {

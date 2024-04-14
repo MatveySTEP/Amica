@@ -20,6 +20,6 @@ func Connect() {
 	DB = connection
 	err = connection.AutoMigrate(&models2.User{}, &models2.Course{}, &models2.Feedback{})
 	if err != nil {
-		panic("pppp")
+		panic("ошибка миграции")
 	}
 }
